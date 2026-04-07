@@ -50,7 +50,7 @@ export const TransactionForm = () => {
   });
 
   // ✅ ADDED submit handler
-const onSubmit = async () => {
+const onSubmit = async (data) => {
   const { data: resData, error } = await createTransaction(data);
 
   if (error) {
