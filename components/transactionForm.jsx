@@ -32,15 +32,16 @@ const formSchema = z.object({
     .min(1, "Transaction title must be at least 1 char")
     .max(20, "Transaction title must be at most 20 char"),
 
-  amount: z.coerce
-    .number()
+amount: z.preprocess(
+  (val) => Number(val),
+  z.number()
+)
    
 });
 
-type FormData = z.infer<typeof formSchema>;
 
 export const TransactionForm = () => {
-  const form = useForm<FormData>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
@@ -49,7 +50,7 @@ export const TransactionForm = () => {
   });
 
   // ✅ ADDED submit handler
-const onSubmit = async (data: FormData) => {
+const onSubmit = async () => {
   const { data: resData, error } = await createTransaction(data);
 
   if (error) {
